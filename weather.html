@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+*{
+    margin:0;
+    padding: 0;
+    font-family: "Poppins",sans-serif;
+    box-sizing: border-box;
+}
+body{
+    background-color: #222;
+}
+.card{
+    width: 90%;
+    max-width: 470px;
+    background-image: linear-gradient(125deg, #00feba, #5b548a);
+    color: #fff;
+    margin: 100px auto 0;
+    border-radius: 20px;
+    padding: 40px 35px;
+    text-align: center;
+
+}
+.search{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+.search input{
+    border: 0;
+    outline: 0;
+    background-color:#ebfffc ;
+    color: #555;
+    padding: 10px 25px;
+    height: 60px;
+    border-radius: 30px;
+    flex: 1;
+    margin-right: 16px;
+    font-size: 18px;
+
+}
+.search button{
+     border: 0;
+    outline: 0;
+    background-color:#ebfffc ;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+}
+.search button img{
+    width: 26px;
+}
+.weather img{
+    height: 100px;
+    width: 120px;
+    margin-top: 10px;
+    mix-blend-mode:multiply;
+}
+.weather icon{
+    width: 170px;
+    margin-top: 30px;
+}
+.weather h1{
+    font-size: 50px;
+    font-weight: 500;
+}
+.weather h2{
+    font-size: 30px;
+    font-weight: 400;
+    margin-top: -10px;
+}
+.details{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    margin-top: 50px;
+
+}
+.col{
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+.col img{
+    width: 40px;
+    margin-right: 10px;
+}
+
+.humidity, .Wind{
+font-size: 25px;
+margin-top: -6px;
+}
+
+
+
+    </style>
+</head>
+<body>
+  <div class="card">
+    <div class="search">
+        <input type="text" placeholder="Enter a city" spellcheck="false">
+        <button><img src="https://static.vecteezy.com/system/resources/thumbnails/009/652/218/small_2x/magnifying-glass-icon-isolated-on-white-background-search-illustration-vector.jpg"></button>
+    </div>
+      <div class="weather">
+        <img src="https://www.creativefabrica.com/wp-content/uploads/2021/08/07/Heavy-Rain-Icon-Graphics-15594677-1-1-580x374.jpg">
+        <h1 class="temp">22°C</h1>
+        <h2 class="city">New York</h2>
+        <div class="details">
+            <div class=" col">
+                <img src="https://i.pinimg.com/564x/64/30/15/643015a970533d49ed6b7e2f569b3fb6.jpg">
+                <div>
+                    <p class="humidity">50%</p>
+                    <p>Humidity</p>
+                </div>
+            </div>
+             <div class=" col">
+                <img src="https://static.vecteezy.com/system/resources/previews/022/782/496/non_2x/wind-speed-icon-wind-clouds-icon-weather-forecast-pictogram-wind-icon-wind-blowing-windy-weather-air-icons-doodle-wind-winds-and-clouds-weather-symbol-free-vector.jpg">
+                <div>
+                    <p class="Wind">15 km/h</p>
+                    <p>Wind Speed</p>
+                </div>
+        </div>
+        </div>
+    </div> 
+</div> 
+
+<script>
+const apiKey = "ed33f6cf7761711e139461577de24c86";  // 🔑 Replace with your OpenWeather API key
+const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+const searchBox = document.querySelector(".search input");
+const searchBtn = document.querySelector(".search button");
+const weatherIcon = document.querySelector(".icon");
+
+async function checkWeather(city){
+    const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+    if(response.status == 404){
+        document.querySelector(".city").innerHTML = data.name;
+        document.querySelector(".temp").innerHTML = data.main.temp + "°C";
+        document.querySelector(".humidity").innerHTML =data.main.humidity +  "%";
+        document.querySelector(".Wind").innerHTML = data.wind.speed + "km/h";
+        weatherIcon.src = "";
+    } else {
+        var data = await response.json();
+        console.log(data);
+
+        document.querySelector(".city").innerHTML = data.name;
+        document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
+        document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+        document.querySelector(".Wind").innerHTML = data.wind.speed + " km/h";
+
+        // set icon
+        const iconCode = data.weather[0].icon;
+        weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    }
+}
+
+searchBtn.addEventListener("click", ()=>{
+    checkWeather(searchBox.value);
+})
+</script>
+
+    
+</body>
+</html>
